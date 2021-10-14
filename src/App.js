@@ -29,28 +29,44 @@ class App extends React.Component {
     this.state = {
       input: '',
       imageUrl: '',
+      box: {},
     };
   }
 
+  calculateFaceLocation = (data) => {
+    const clarifaiFace =
+      data.outputs[0].data.regions[0].region_info.bounding_box;
+    
+    const image = document.getElementById('inputimage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height),
+    };
+  };
+
+  displayFaceBox = (box) => {
+    this.setState({ box: box });
+  };
+
   onInputChange = (event) => {
-    this.setState({ input: event.target.value});
+    this.setState({ input: event.target.value });
   };
 
   onButtonSubmit = (event) => {
     this.setState({ imageUrl: this.state.input });
-    // model_id: '31025e019a18970a1acc55ba6a184dc6',
+    // model_id: 'e15d0f873e66047e579f90cf82c9882z',
     // version_id: 'a5d7776f0c064a41b48c3ce039049f65',
     app.models
-      .predict(
-        'e15d0f873e66047e579f90cf82c9882z',
-        this.state.input
-      )
-      .then(
-        function (response) {
-          console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
-        },
-        function (error) {}
-      );
+      .predict('e15d0f873e66047e579f90cf82c9882z', this.state.input)
+      .then((response) => {
+        //console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
+        this.displayFaceBox(this.calculateFaceLocation(response));
+      })
+      .catch((error) => console.error(error));
   };
 
   render() {
@@ -64,7 +80,7 @@ class App extends React.Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
-        <FaceRecognition imageUrl={this.state.imageUrl} />
+        <FaceRecognition imageUrl={this.state.imageUrl} box={this.state.box} />
       </div>
     );
   }
