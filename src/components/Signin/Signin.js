@@ -2,7 +2,7 @@ import React from 'react';
 
 class Signin extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       signInEmail: '',
       signInPassword: '',
@@ -39,7 +39,7 @@ class Signin extends React.Component {
     return (
       <article className='br3 ba b--black-10 mv4 w-100 w-50-m w-25-1 mw6 shadow-5 center'>
         <main className='pa4 black-80'>
-          <form className='measure'>
+          <div className='measure'>
             <fieldset
               id='sign_up'
               className='ba b--transparent ph0 mh0'>
@@ -88,7 +88,7 @@ class Signin extends React.Component {
                 Register
               </p>
             </div>
-          </form>
+          </div>
         </main>
       </article>
     );
