@@ -7,13 +7,8 @@ import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 
 import './App.css';
-
-const app = new Clarifai.App({
-  apiKey: 'c1f4d7bd2a17465f81c44913eac997b7',
-});
 
 const particlesOptions = {
   number: {
@@ -46,7 +41,7 @@ class App extends React.Component {
   }
 
   loadUser = (data) => {
-    console.log(data);
+    //console.log(data);
     this.setState({
       user: {
         id: data.id,
@@ -85,8 +80,14 @@ class App extends React.Component {
     this.setState({ imageUrl: this.state.input });
     // model_id: 'e15d0f873e66047e579f90cf82c9882z',
     // version_id: 'a5d7776f0c064a41b48c3ce039049f65',
-    app.models
-      .predict('e15d0f873e66047e579f90cf82c9882z', this.state.input)
+    fetch('http://localhost:3000/imageurl', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({
+        input: this.state.input,
+      }),
+    })
+    .then((response) => { return response.json()})
       .then((response) => {
         //console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
         if (response) {
