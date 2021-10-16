@@ -25,26 +25,28 @@ const particlesOptions = {
   },
 };
 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: '',
+  },
+};
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: '',
-      },
-    };
+    this.state = initialState;
   }
 
   loadUser = (data) => {
+    console.log(data);
     this.setState({
       user: {
         id: data.id,
@@ -102,6 +104,9 @@ class App extends React.Component {
               this.setState(
                 Object.assign(this.state.user, { entries: count })
               );
+            })
+            .catch((error) => {
+              console.log(error);
             });
         }
 
@@ -112,7 +117,7 @@ class App extends React.Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({ isSignedIn: false });
+      this.setState(initialState);
     } else if (route === 'home') {
       this.setState({ isSignedIn: true });
     }
@@ -132,8 +137,8 @@ class App extends React.Component {
           <div>
             <Logo />
             <Rank
-              name={this.state.name}
-              entries={this.state.entries}
+              name={this.state.user.name}
+              entries={this.state.user.entries}
             />
             <ImageLinkForm
               onInputChange={this.onInputChange}
