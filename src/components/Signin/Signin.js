@@ -18,7 +18,7 @@ class Signin extends React.Component {
   };
 
   onSubmitSignIn = () => {
-    fetch('http://localhost:3000/signin', {
+    fetch('https://fast-forest-96777.herokuapp.com/signin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -32,7 +32,8 @@ class Signin extends React.Component {
           this.props.loadUser(user)
           this.props.onRouteChange('home');
         }
-      });
+      })
+      .catch(err => {console.error(err);});
   };
 
   render() {

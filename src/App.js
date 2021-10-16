@@ -80,7 +80,7 @@ class App extends React.Component {
     this.setState({ imageUrl: this.state.input });
     // model_id: 'e15d0f873e66047e579f90cf82c9882z',
     // version_id: 'a5d7776f0c064a41b48c3ce039049f65',
-    fetch('http://localhost:3000/imageurl', {
+    fetch('https://fast-forest-96777.herokuapp.com/imageurl', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
@@ -91,7 +91,7 @@ class App extends React.Component {
       .then((response) => {
         //console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
         if (response) {
-          fetch('http://localhost:3000/image', {
+          fetch('https://fast-forest-96777.herokuapp.com/image', {
             method: 'PUT',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
